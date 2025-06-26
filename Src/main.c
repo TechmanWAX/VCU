@@ -164,6 +164,12 @@ int main(void)
   HAL_TIM_PWM_Start_IT(&htim12, TIM_CHANNEL_1);
   // Start ADC conversion
   HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&adc1, 4);
+  initializeBMS(&bms);
+  #ifdef DO_NOT_USE_BMS
+  bms.chargingProtectionVoltage = 4150;
+  bms.maximumVoltage = 4000;
+  #endif
+
   /* USER CODE END 2 */
 
   /* Infinite loop */

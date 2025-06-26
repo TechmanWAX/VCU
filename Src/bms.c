@@ -50,7 +50,7 @@ void process_BMS_Data(uint8_t groupId, uint8_t *data) {
 			bms.protectionTemperature = (data[6] << 8) | data[7];
 		}
 		if (groupId == 0x03) {
-			bms.totalVoltage = (data[2] << 8) | data[3];
+		 	bms.totalVoltage = (data[2] << 8) | data[3];
 			bms.totalCurrent = (int16_t)((data[4] << 8) | data[5]);
 			bms.totalPower = (data[6] << 8) | data[7];
 			}

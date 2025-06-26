@@ -120,16 +120,21 @@ void set_OBC_state(void) {
 	// EVSE connector button pushed
 	if (Charger.proximity_pilot <= 0x0900) {
 		Charger.pp_state = CHARGER_PP_BTN_PUSHED;
-		Charger.state = BLOCKED;
 		Charger.current = 0;
 		Charger.voltage = 0;
-		Charger.contactor_request = CHARGER_EVSE_CONNECTED;
+		Charger.state = BLOCKED;
 	}
 	// EVSE connector inserted
 	else if (Charger.proximity_pilot <= 0x0C80) {
 		Charger.pp_state = CHARGER_PP_PLUGED;
+		if (Charger.state == BLOCKED || Charger.state == DISCONNECTED){
+			Charger.state = CONNECTED;
+		}
 		switch (Charger.state) {
 		case CONNECTED:
+			HAL_GPIO_WritePin(GPIOD, OUT_IGCT_Pin, GPIO_PIN_SET);	// Close charging relay
+			Charger.voltage = CHARGER_MAX_VOLTAGE;					// Set Charging voltage
+			Charger.contactor_request = CHARGER_EVSE_CONNECTED;
 			Charger.state = CHARGING;
 			break;
 		case CHARGING:
@@ -149,36 +154,15 @@ void set_OBC_state(void) {
 		default:
 			break;
 		}
-
-		if (bms.maximumVoltage >= bms.chargingProtectionVoltage) {
-			Charger.state = CHARGED;
-			Charger.voltage = 0;
-			Charger.current = 0;
-		}
-		else {
-			Charger.contactor_request = CHARGER_EVSE_CONNECTED;
-			// The charge level is less than the maximum
-			if (Charger.state != CHARGED){
-				if (Charger.current < CHARGER_MAX_CURRENT) {
-					Charger.current ++;
-				}
-				Charger.voltage = 370;
-			}
-			// The battery is charged
-			else {
-				Charger.voltage = 0;
-				Charger.current = 0;
-				Charger.state = CHARGED;
-			}
-		}
 	}
 	// EVSE disconnected
 	else {
-		Charger.pp_state = CHARGER_PP_PLUGED;
-		Charger.state = DISCONNECTED;
-		Charger.contactor_request = CHARGER_EVSE_DISCONNECTED;
-		Charger.voltage = 0;
+		HAL_GPIO_WritePin(GPIOD, OUT_IGCT_Pin, GPIO_PIN_RESET);		// Open charging relay
+		Charger.pp_state = CHARGER_PP_EMPTY;
 		Charger.current = 0;
+		Charger.voltage = 0;
+		Charger.contactor_request = CHARGER_EVSE_DISCONNECTED;
+		Charger.state = DISCONNECTED;
 	}
 
 
@@ -190,7 +174,7 @@ void set_OBC_state(void) {
 	TxData_1[0] = Charger.voltage >> 8;
 	TxData_1[1] = Charger.voltage &= 0xFF;
 	TxData_1[2] = Charger.current;
-	TxData_1[3] = 51;
+	TxData_1[3] = 55;
 	TxData_1[4] = 0;
 	TxData_1[5] = 0;
 	TxData_1[6] = 0;
@@ -212,10 +196,15 @@ void MMC_Heartbeat(void) {
 	TxData_1[0] = 0;
 	TxData_1[1] = 0;
 	TxData_1[2] = Charger.contactor_request;
-	TxData_1[3] = 0x39;
-	TxData_1[4] = 0x91;
-	TxData_1[5] = 0xFE;
-	TxData_1[6] = 0x0C;
+//	TxData_1[3] = 0x39;
+//	TxData_1[4] = 0x91;
+//	TxData_1[5] = 0xFE;
+//	TxData_1[6] = 0x0C;
+//	TxData_1[7] = 0x10;
+	TxData_1[3] = 0x10;
+	TxData_1[4] = 0x78;
+	TxData_1[5] = 0x00;
+	TxData_1[6] = 0x00;
 	TxData_1[7] = 0x10;
 	while (HAL_CAN_GetTxMailboxesFreeLevel(&hcan1) < 1)
 		for (uint8_t j = 0; j < 255; j++)

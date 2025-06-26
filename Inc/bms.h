@@ -19,6 +19,7 @@
 
 // Hysteresis for charge after charged battery was discharged
 #define BMS_HYSTERESIS		100
+#define DO_NOT_USE_BMS		true
 
 typedef struct {
     bool hostTemperatureBelowZero;

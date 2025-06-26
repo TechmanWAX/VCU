@@ -39,6 +39,10 @@ void process_charger_status2(uint8_t *data, ChargerStatus2_t *status) {
     status->ready_for_charging = (status->status & 0x08) != 0;
 }
 
+// Show status of charging process
+void charger_led(uint16_t current, uint16_t voltage) {
+	;
+}
 // 0ACA - Disconnected
 // 095A - 09C2 - 480 Ohm Unlock Pressed
 // 06EB - 0700 - 150 Ohm Inserted
