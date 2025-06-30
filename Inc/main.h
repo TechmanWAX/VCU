@@ -145,8 +145,8 @@ void Error_Handler(void);
 #define IN_FB_RESERVE3_4_GPIO_Port GPIOB
 #define OUT_PUMP_Pin GPIO_PIN_8
 #define OUT_PUMP_GPIO_Port GPIOD
-#define OUT_RESERVE2_Pin GPIO_PIN_9
-#define OUT_RESERVE2_GPIO_Port GPIOD
+#define OUT_CP_LED_Pin GPIO_PIN_9
+#define OUT_CP_LED_GPIO_Port GPIOD
 #define IN_FB_RESERVE1_2_Pin GPIO_PIN_10
 #define IN_FB_RESERVE1_2_GPIO_Port GPIOD
 #define OUT_IGCT_Pin GPIO_PIN_11

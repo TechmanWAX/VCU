@@ -118,14 +118,15 @@ void  set_climate_power(uint16_t input_value) {
 // Function for set charger and DC-DC state
 void set_OBC_state(void) {
 	// EVSE connector button pushed
-	if (Charger.proximity_pilot <= 0x0900) {
+//	if (Charger.proximity_pilot <= 0x0900) {
+	if (Charger.proximity_pilot <= 0x0C80 && Charger.proximity_pilot > 0x0900) {
 		Charger.pp_state = CHARGER_PP_BTN_PUSHED;
 		Charger.current = 0;
 		Charger.voltage = 0;
 		Charger.state = BLOCKED;
 	}
 	// EVSE connector inserted
-	else if (Charger.proximity_pilot <= 0x0C80) {
+	else if (Charger.proximity_pilot <= 0x0900) {
 		Charger.pp_state = CHARGER_PP_PLUGED;
 		if (Charger.state == BLOCKED || Charger.state == DISCONNECTED){
 			Charger.state = CONNECTED;
@@ -196,16 +197,16 @@ void MMC_Heartbeat(void) {
 	TxData_1[0] = 0;
 	TxData_1[1] = 0;
 	TxData_1[2] = Charger.contactor_request;
-//	TxData_1[3] = 0x39;
-//	TxData_1[4] = 0x91;
-//	TxData_1[5] = 0xFE;
-//	TxData_1[6] = 0x0C;
-//	TxData_1[7] = 0x10;
-	TxData_1[3] = 0x10;
-	TxData_1[4] = 0x78;
-	TxData_1[5] = 0x00;
-	TxData_1[6] = 0x00;
+	TxData_1[3] = 0x39;
+	TxData_1[4] = 0x91;
+	TxData_1[5] = 0xFE;
+	TxData_1[6] = 0x0C;
 	TxData_1[7] = 0x10;
+//	TxData_1[3] = 0x10;
+//	TxData_1[4] = 0x78;
+//	TxData_1[5] = 0x00;
+//	TxData_1[6] = 0x00;
+//	TxData_1[7] = 0x10;
 	while (HAL_CAN_GetTxMailboxesFreeLevel(&hcan1) < 1)
 		for (uint8_t j = 0; j < 255; j++)
 			;

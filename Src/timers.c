@@ -43,12 +43,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim_oc)
 				;
 //			setup_CLUSTER_CAN_TEMPERATURES();																	// 0x150
 			wake_Ic();
+			charger_led();
 			debug_Message(bms.minimumVoltage, bms.maximumVoltage, Climate.regulator_position, Charger.proximity_pilot);
 		}
 	}
 	//Timer for Inputs and Outputs
 	//Tick every 100 mS
 	if (htim_oc->Instance == TIM3) {
+		timer_count_GPIO ++;
 		if (timer_count_GPIO % GPIO_TIM_PERIOD_100 == 0)
 		{
 			;

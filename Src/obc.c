@@ -40,8 +40,18 @@ void process_charger_status2(uint8_t *data, ChargerStatus2_t *status) {
 }
 
 // Show status of charging process
-void charger_led(uint16_t current, uint16_t voltage) {
-	;
+void charger_led(void) {
+	// light - Charged
+	// meander - charging
+	if (Charger.state == CHARGING && Charger.voltage > 0 && Charger.current > 0) {
+		HAL_GPIO_TogglePin(OUT_CP_LED_GPIO_Port, OUT_CP_LED_Pin);
+	}
+	else if (Charger.state == CHARGED) {
+		HAL_GPIO_WritePin(OUT_CP_LED_GPIO_Port, OUT_CP_LED_Pin, GPIO_PIN_SET);		// Open charging relay
+	}
+	else {
+		HAL_GPIO_WritePin(OUT_CP_LED_GPIO_Port, OUT_CP_LED_Pin, GPIO_PIN_RESET);		// Open charging relay
+	}
 }
 // 0ACA - Disconnected
 // 095A - 09C2 - 480 Ohm Unlock Pressed

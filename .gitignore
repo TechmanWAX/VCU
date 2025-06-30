@@ -1,0 +1,6 @@
+.idea/*
+.venv/*
+.git/*
+dev/*
+files/*
+.env

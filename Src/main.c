@@ -630,7 +630,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, OUT_INT_LED_Pin|OUT_ECO_Pin|OUT_PARK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, OUT_PUMP_Pin|OUT_RESERVE2_Pin|OUT_IGCT_Pin|OUT_FAN2_Pin
+  HAL_GPIO_WritePin(GPIOD, OUT_PUMP_Pin|OUT_CP_LED_Pin|OUT_IGCT_Pin|OUT_FAN2_Pin
                           |OUT_FAN1_Pin|OUT_DIFFLOCK_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
@@ -689,9 +689,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : OUT_PUMP_Pin OUT_RESERVE2_Pin OUT_IGCT_Pin OUT_FAN2_Pin
+  /*Configure GPIO pins : OUT_PUMP_Pin OUT_CP_LED_Pin OUT_IGCT_Pin OUT_FAN2_Pin
                            OUT_FAN1_Pin OUT_DIFFLOCK_Pin */
-  GPIO_InitStruct.Pin = OUT_PUMP_Pin|OUT_RESERVE2_Pin|OUT_IGCT_Pin|OUT_FAN2_Pin
+  GPIO_InitStruct.Pin = OUT_PUMP_Pin|OUT_CP_LED_Pin|OUT_IGCT_Pin|OUT_FAN2_Pin
                           |OUT_FAN1_Pin|OUT_DIFFLOCK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;

@@ -90,6 +90,7 @@ extern CHARGER_t Charger;
 void process_dcdc_status(uint8_t *data, DCDCStatus_t *status);
 void process_charger_status1(uint8_t *data, ChargerStatus1_t *status);
 void process_charger_status2(uint8_t *data, ChargerStatus2_t *status);
+void charger_led(void);
 
 
 #endif /* INC_OBC_H_ */
